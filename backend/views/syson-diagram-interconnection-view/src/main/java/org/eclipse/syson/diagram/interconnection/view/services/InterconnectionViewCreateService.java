@@ -198,6 +198,27 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         }
         return self;
     }
+    public Element createPartUsageAndFlowConnection(PartUsage self) {
+        var parent = self.getOwner();
+        if (parent != null) {
+            // create a new port on given part usage
+            var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
+            this.elementInitializer(newSelfPort);
+            this.addChildInParent(self, newSelfPort);
+            // create a new part usage as a self sibling
+            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            this.elementInitializer(newPartUsage);
+            this.addChildInParent(parent, newPartUsage);
+            // create a new port on the new part usage
+            var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
+            this.elementInitializer(newPartUsagePort);
+            this.addChildInParent(newPartUsage, newPartUsagePort);
+            // create binding connector as usage edge between both new ports
+            this.createFlowConnectionUsage(newSelfPort, newPartUsagePort);
+            return newPartUsage;
+        }
+        return self;
+    }
 
     private void addChildInParent(Element parent, Element child) {
         // Parent could be a Package where children are stored
