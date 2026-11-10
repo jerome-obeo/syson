@@ -20,7 +20,11 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.metamodel.services.MetamodelQueryElementService;
+import org.eclipse.syson.sysml.metamodel.services.NonStandardLibraryFeaturePredicate;
+import org.eclipse.syson.sysml.metamodel.services.RequiresRedefinitionFeatureChainPredicate;
 import org.eclipse.syson.tree.explorer.services.api.ISysONExplorerService;
+import org.eclipse.syson.tree.selectiondialog.FeatureChain;
 import org.eclipse.syson.tree.services.TreeQuerySelectionDialogService;
 
 /**
@@ -105,6 +109,21 @@ public class TreeQueryAQLService {
 
     public String getType(Object self) {
         return this.sysonExplorerService.getType(self);
+    }
+
+    /**
+     * Returns accessible chains requiring a local redefinition, excluding standard library features.
+     *
+     * @param self
+     *            the type on which the tool was invoked
+     * @return the selectable feature chains
+     */
+    public List<FeatureChain> getFeatureChainSelectionDialogElements(Type self) {
+        return new MetamodelQueryElementService().streamFeatureChains(self,
+                new NonStandardLibraryFeaturePredicate(),
+                new RequiresRedefinitionFeatureChainPredicate())
+                .map(FeatureChain::new)
+                .toList();
     }
 
     public boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
