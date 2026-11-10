@@ -68,6 +68,7 @@ import { NewExpressionDiagramToolOverriddenContribution } from '../expressions/N
 import { NewExpressionExplorerToolOverriddenContribution } from '../expressions/NewExpressionExplorerToolOverriddenContribution';
 import { NewSysMLExpressionMenuContribution } from '../expressions/NewSysMLExpressionMenuContribution';
 import { InsertTextualSysMLv2ExplorerToolOverriddenContribution } from '../InsertTextualSysMLv2ExplorerToolOverriddenContribution';
+import { RedefineNestedFeatureToolOverriddenContribution } from '../redefineNestedFeature/RedefineNestedFeatureToolOverriddenContribution';
 import { InsertTextualSysMLMenuContribution } from '../InsertTextualSysMLv2MenuContribution';
 import { SysONNavigationBarMenuIcon } from '../navigationBarMenu/SysONNavigationBarMenuIcon';
 import { PublishProjectSysMLContentsAsLibraryCommand } from '../omnibox/PublishProjectSysMLContentsAsLibraryCommand';
@@ -261,6 +262,12 @@ sysONExtensionRegistry.putData(widgetContributionExtensionPoint, {
 });
 
 const paletteToolOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
+  {
+    canHandle: (representationKind: string, tool: GQLTool) => {
+      return representationKind === DIAGRAM_REPRESENTATION_KIND && tool.label === 'Redefine a nested feature';
+    },
+    component: RedefineNestedFeatureToolOverriddenContribution,
+  },
   {
     canHandle: (representationDescriptionId: string, tool: GQLTool) => {
       return representationDescriptionId === TREE_REPRESENTATION_KIND && tool.id === 'newObjectsFromText';

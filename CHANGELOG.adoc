@@ -30,6 +30,7 @@ Optional predicates control branch traversal and terminal selection; the stream 
 Chain selection receives the root `Type` and a complete, unmodifiable `List<Feature>` snapshot; `RequiresRedefinitionFeatureChainPredicate` excludes fully local chains while preserving traversal of their inherited descendants.
 The collecting API requires a non-negative `maxResults` parameter and stops traversal once this result limit is reached.
 `NonStandardLibraryFeaturePredicate` prunes features declared in standard SysML or KerML library resources, regardless of their inheritance path.
+- https://github.com/eclipse-syson/syson/issues/2590[#2590] [diagrams] Add `Redefine a nested feature` tool in diagrams.
 
 == v2026.11.0
 
